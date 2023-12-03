@@ -1,4 +1,5 @@
-﻿using Domain.Model;
+﻿using Application;
+using Domain.Model;
 
 internal class Program
 {
@@ -14,19 +15,23 @@ internal class Program
 
     static Pessoa Identificacao()
     {
-        var pessoa = new Pessoa();
+        var cliente = new Cliente();
+        var calculo = new Calculo();
 
         Console.WriteLine("Seu número de identificação:");
-        pessoa.Id = int.Parse(Console.ReadLine());
+        cliente.Id = int.Parse(Console.ReadLine());
 
         Console.WriteLine("Seu nome:");
-        pessoa.Nome = Console.ReadLine();
+        cliente.Nome = Console.ReadLine();
 
         Console.WriteLine("Seu CPF:");
-        pessoa.Cpf = Console.ReadLine();
+        cliente.Cpf = Console.ReadLine();
+
+        Console.WriteLine("Seu saldo:");
+        cliente.Saldo = float.Parse(Console.ReadLine());
         Console.Clear();
 
-        Console.WriteLine($"Como posso ajudar {pessoa.Nome}?");
+        Console.WriteLine($"Como posso ajudar {cliente.Nome}?");
 
         var x = 1;
 
@@ -43,15 +48,32 @@ internal class Program
             {
                 Environment.Exit(0);
             }
-            if (opcaoDesejada == 1 || opcaoDesejada == 2)
+            if (opcaoDesejada == 1)
             {
-                Console.WriteLine("Menu");
-                Environment.Exit(0);
+                Console.Clear();
+
+                Console.WriteLine("Digite o valor:");
+                float deposito = float.Parse(Console.ReadLine());
+
+                cliente.Saldo = calculo.Soma(cliente.Saldo, deposito);
+
+                Console.WriteLine($"Seu saldo atual é {cliente.Saldo}");
+            }
+            if (opcaoDesejada == 2)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Digite o valor:");
+                var saque = float.Parse(Console.ReadLine());
+
+                cliente.Saldo = calculo.Subtracao(cliente.Saldo, saque);
+
+                Console.WriteLine($"Seu saldo atual é {cliente.Saldo}");
             }
         }
 
         Console.ReadKey();
         
-        return pessoa;
+        return cliente;
     }
 }
